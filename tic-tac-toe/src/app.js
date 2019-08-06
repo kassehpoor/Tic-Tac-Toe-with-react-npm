@@ -1,3 +1,4 @@
+// Square component is a controlled component.The Board has full control over them.
 class Square extends React.Component {
   constructor(props) {
     super(props);
@@ -27,6 +28,7 @@ class Board extends React.Component {
   }
 
   handleClick(i) {
+    //create a copy of squares to modify.instead of modyfiying the exsisting array.
     const squares = this.state.squares.slice();
     squares[i] = 'X';
     this.setState({ squares: squares });

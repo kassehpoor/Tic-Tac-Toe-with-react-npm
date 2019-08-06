@@ -6,6 +6,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// Square component is a controlled component.The Board has full control over them.
 var Square = function (_React$Component) {
   _inherits(Square, _React$Component);
 
@@ -58,6 +59,7 @@ var Board = function (_React$Component2) {
   _createClass(Board, [{
     key: 'handleClick',
     value: function handleClick(i) {
+      //create a copy of squares to modify.instead of modyfiying the exsisting array.
       var squares = this.state.squares.slice();
       squares[i] = 'X';
       this.setState({ squares: squares });
