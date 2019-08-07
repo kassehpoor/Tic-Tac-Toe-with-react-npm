@@ -6,7 +6,7 @@ body {
 ol, ul {
   padding-left: 30px;
 }
-
+ /* I did text-align center */
 #root {
   text-align: center;
 }

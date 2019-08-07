@@ -32,8 +32,8 @@ class Square extends React.Component {
 // Square component is a controlled component.The Board has full control over them.
 function Square(props) {
   return React.createElement(
-    'button',
-    { className: 'square', onClick: props.onClick },
+    "button",
+    { className: "square", onClick: props.onClick },
     props.value
   );
 }
@@ -41,80 +41,64 @@ function Square(props) {
 var Board = function (_React$Component) {
   _inherits(Board, _React$Component);
 
-  function Board(props) {
+  function Board() {
     _classCallCheck(this, Board);
 
-    var _this = _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).call(this, props));
-
-    _this.state = {
-      squares: Array(9).fill(null),
-      xIsNext: true
-    };
-    return _this;
+    return _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).apply(this, arguments));
   }
 
   _createClass(Board, [{
-    key: 'handleClick',
-    value: function handleClick(i) {
-      //create a copy of squares to modify.instead of modyfiying the exsisting array.
-      var squares = this.state.squares.slice();
-      if (calculateWinner(squares) || squares[i]) {
-        return;
-      }
-      squares[i] = this.state.xIsNext ? 'X' : 'O';
-      this.setState({
-        squares: squares,
-        xIsNext: !this.state.xIsNext
-      });
-    }
-  }, {
-    key: 'renderSquare',
+    key: "renderSquare",
+
+    // constructor(props) {
+    //   super(props);
+    //   this.state = {
+    //     squares: Array(9).fill(null),
+    //     xIsNext: true,
+    //   };
+    // }
+
     value: function renderSquare(i) {
       var _this2 = this;
 
       return React.createElement(Square, {
-        value: this.state.squares[i],
+        value: this.props.squares[i],
         onClick: function onClick() {
-          return _this2.handleClick(i);
+          return _this2.props.onClick(i);
         }
       });
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
-      var winner = calculateWinner(this.state.squares);
-      var status = void 0;
-      if (winner) {
-        status = 'Winner:' + winner;
-      } else {
-        status = 'Next player:' + (this.state.xIsNext ? 'X' : 'O');
-      }
+      // const winner = calculateWinner(this.state.squares);
+      // let status;
+      // if (winner) {
+      //   status = 'Winner:' + winner;
+      // } else {
+      //   status = 'Next player:' + (this.state.xIsNext ? 'X' : 'O');
+      // }
 
       return React.createElement(
-        'div',
+        "div",
         null,
         React.createElement(
-          'div',
-          { className: 'status' },
-          status
-        ),
-        React.createElement(
-          'div',
-          { className: 'board-row' },
+          "div",
+          { className: "board-row" },
           this.renderSquare(0),
           this.renderSquare(1),
           this.renderSquare(2)
         ),
         React.createElement(
-          'div',
-          { className: 'board-row' },
+          "div",
+          { className: "board-row" },
           this.renderSquare(3),
           this.renderSquare(4),
           this.renderSquare(5)
         ),
         React.createElement(
-          'div',
-          { className: 'board-row' },
+          "div",
+          { className: "board-row" },
           this.renderSquare(6),
           this.renderSquare(7),
           this.renderSquare(8)
@@ -129,28 +113,75 @@ var Board = function (_React$Component) {
 var Game = function (_React$Component2) {
   _inherits(Game, _React$Component2);
 
-  function Game() {
+  function Game(props) {
     _classCallCheck(this, Game);
 
-    return _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).apply(this, arguments));
+    var _this3 = _possibleConstructorReturn(this, (Game.__proto__ || Object.getPrototypeOf(Game)).call(this, props));
+
+    _this3.state = {
+      history: [{
+        squares: Array(9).fill(null)
+      }],
+      xIsNext: true
+    };
+    return _this3;
   }
 
   _createClass(Game, [{
-    key: 'render',
+    key: "handleClick",
+    value: function handleClick(i) {
+      // const squares = this.state.squares.slice();
+      var history = this.state.history;
+      var current = history[history.length - 1];
+      var squares = current.squares.slice();
+      if (calculateWinner(squares) || squares[i]) {
+        return;
+      }
+      squares[i] = this.state.xIsNext ? 'X' : 'O';
+      this.setState({
+        // squares: squares,
+        history: history.concat([{ squares: squares }]),
+        xIsNext: !this.state.xIsNext
+      });
+    }
+  }, {
+    key: "render",
     value: function render() {
+      var _this4 = this;
+
+      var history = this.state.history;
+      var current = history[history.length - 1];
+      var winner = calculateWinner(current.squares);
+
+      var status = void 0;
+      if (winner) {
+        status = 'Winner: ' + winner;
+      } else {
+        status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+      }
+
       return React.createElement(
-        'div',
-        { className: 'game' },
+        "div",
+        { className: "game" },
         React.createElement(
-          'div',
-          { className: 'game-board' },
-          React.createElement(Board, null)
+          "div",
+          { className: "game-board" },
+          React.createElement(Board, {
+            squares: current.squares,
+            onClick: function onClick(i) {
+              return _this4.handleClick(i);
+            }
+          })
         ),
         React.createElement(
-          'div',
-          { className: 'game-info' },
-          React.createElement('div', null),
-          React.createElement('ol', null)
+          "div",
+          { className: "game-info" },
+          React.createElement(
+            "div",
+            null,
+            status
+          ),
+          React.createElement("ol", null)
         )
       );
     }
