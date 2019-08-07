@@ -7,6 +7,10 @@ ol, ul {
   padding-left: 30px;
 }
 
+#root {
+  text-align: center;
+}
+
 .board-row:after {
   clear: both;
   content: "";
@@ -43,6 +47,7 @@ ol, ul {
 .game {
   display: flex;
   flex-direction: row;
+  text-align: center;
 }
 
 .game-info {
