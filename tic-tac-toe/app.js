@@ -122,6 +122,7 @@ var Game = function (_React$Component2) {
       history: [{
         squares: Array(9).fill(null)
       }],
+      stepNumber: 0,
       xIsNext: true
     };
     return _this3;
@@ -131,7 +132,7 @@ var Game = function (_React$Component2) {
     key: "handleClick",
     value: function handleClick(i) {
       // const squares = this.state.squares.slice();
-      var history = this.state.history;
+      var history = this.state.history.slice(0, this.state.stepNumber + 1);
       var current = history[history.length - 1];
       var squares = current.squares.slice();
       if (calculateWinner(squares) || squares[i]) {
@@ -141,7 +142,16 @@ var Game = function (_React$Component2) {
       this.setState({
         // squares: squares,
         history: history.concat([{ squares: squares }]),
+        stepNumber: history.length,
         xIsNext: !this.state.xIsNext
+      });
+    }
+  }, {
+    key: "jumpTo",
+    value: function jumpTo(step) {
+      this.setState({
+        stepNumber: step,
+        xIsNext: step % 2 === 0
       });
     }
   }, {
@@ -150,18 +160,19 @@ var Game = function (_React$Component2) {
       var _this4 = this;
 
       var history = this.state.history;
-      var current = history[history.length - 1];
+      // const current = history[history.length - 1];
+      var current = history[this.state.stepNumber];
       var winner = calculateWinner(current.squares);
 
       var moves = history.map(function (step, move) {
         var desc = move ? 'Go to move #' + move : 'Go to game start';
         return React.createElement(
           "li",
-          null,
+          { key: move },
           React.createElement(
             "button",
             { onClick: function onClick() {
-                return _this4.jummpTo(move);
+                return _this4.jumpTo(move);
               } },
             desc
           )
