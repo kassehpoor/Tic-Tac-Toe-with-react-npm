@@ -8,27 +8,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/*
-class Square extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: null,
-    };
-  }
-
-  render() {
-    return (
-      <button
-        className="square"
-        onClick={() => this.props.onClick()}
-      >
-        {this.props.value}
-      </button>
-    );
-  }
-}
-*/
 // Square component is a controlled component.The Board has full control over them.
 function Square(props) {
   return React.createElement(
@@ -49,15 +28,6 @@ var Board = function (_React$Component) {
 
   _createClass(Board, [{
     key: "renderSquare",
-
-    // constructor(props) {
-    //   super(props);
-    //   this.state = {
-    //     squares: Array(9).fill(null),
-    //     xIsNext: true,
-    //   };
-    // }
-
     value: function renderSquare(i) {
       var _this2 = this;
 
@@ -71,14 +41,6 @@ var Board = function (_React$Component) {
   }, {
     key: "render",
     value: function render() {
-      // const winner = calculateWinner(this.state.squares);
-      // let status;
-      // if (winner) {
-      //   status = 'Winner:' + winner;
-      // } else {
-      //   status = 'Next player:' + (this.state.xIsNext ? 'X' : 'O');
-      // }
-
       return React.createElement(
         "div",
         null,
@@ -131,7 +93,6 @@ var Game = function (_React$Component2) {
   _createClass(Game, [{
     key: "handleClick",
     value: function handleClick(i) {
-      // const squares = this.state.squares.slice();
       var history = this.state.history.slice(0, this.state.stepNumber + 1);
       var current = history[history.length - 1];
       var squares = current.squares.slice();
@@ -140,7 +101,6 @@ var Game = function (_React$Component2) {
       }
       squares[i] = this.state.xIsNext ? 'X' : 'O';
       this.setState({
-        // squares: squares,
         history: history.concat([{ squares: squares }]),
         stepNumber: history.length,
         xIsNext: !this.state.xIsNext

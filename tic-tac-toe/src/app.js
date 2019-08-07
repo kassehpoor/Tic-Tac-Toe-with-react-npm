@@ -1,25 +1,4 @@
 
-/*
-class Square extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: null,
-    };
-  }
-
-  render() {
-    return (
-      <button
-        className="square"
-        onClick={() => this.props.onClick()}
-      >
-        {this.props.value}
-      </button>
-    );
-  }
-}
-*/
 // Square component is a controlled component.The Board has full control over them.
 function Square(props) {
   return (
@@ -30,13 +9,6 @@ function Square(props) {
 }
 
 class Board extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     squares: Array(9).fill(null),
-  //     xIsNext: true,
-  //   };
-  // }
 
   renderSquare(i) {
     return (
@@ -46,19 +18,9 @@ class Board extends React.Component {
       />
     );
   }
-
   render() {
-    // const winner = calculateWinner(this.state.squares);
-    // let status;
-    // if (winner) {
-    //   status = 'Winner:' + winner;
-    // } else {
-    //   status = 'Next player:' + (this.state.xIsNext ? 'X' : 'O');
-    // }
-
     return (
       <div>
-        {/* {<div className="status">{status}</div> } */}
         <div className="board-row">
           {this.renderSquare(0)}
           {this.renderSquare(1)}
@@ -92,7 +54,6 @@ class Game extends React.Component {
   }
 
   handleClick(i) {
-    // const squares = this.state.squares.slice();
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
@@ -101,7 +62,6 @@ class Game extends React.Component {
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
-      // squares: squares,
       history: history.concat([{ squares: squares, }]),
       stepNumber: history.length,
       xIsNext: !this.state.xIsNext,
