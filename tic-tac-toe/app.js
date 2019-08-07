@@ -1,3 +1,5 @@
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -28,7 +30,13 @@ class Square extends React.Component {
 }
 */
 // Square component is a controlled component.The Board has full control over them.
-function Square(props) {}
+function Square(props) {
+  return React.createElement(
+    'button',
+    { className: 'square', onClick: props.onClick },
+    props.value
+  );
+}
 
 var Board = function (_React$Component) {
   _inherits(Board, _React$Component);
@@ -39,7 +47,8 @@ var Board = function (_React$Component) {
     var _this = _possibleConstructorReturn(this, (Board.__proto__ || Object.getPrototypeOf(Board)).call(this, props));
 
     _this.state = {
-      squares: Array(9).fill(null)
+      squares: Array(9).fill(null),
+      xIsNext: true
     };
     return _this;
   }
@@ -49,8 +58,14 @@ var Board = function (_React$Component) {
     value: function handleClick(i) {
       //create a copy of squares to modify.instead of modyfiying the exsisting array.
       var squares = this.state.squares.slice();
-      squares[i] = 'X';
-      this.setState({ squares: squares });
+      if (calculateWinner(squares) || squares[i]) {
+        return;
+      }
+      squares[i] = this.state.xIsNext ? 'X' : 'O';
+      this.setState({
+        squares: squares,
+        xIsNext: !this.state.xIsNext
+      });
     }
   }, {
     key: 'renderSquare',
@@ -67,7 +82,13 @@ var Board = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
-      var status = 'Next player: X';
+      var winner = calculateWinner(this.state.squares);
+      var status = void 0;
+      if (winner) {
+        status = 'Winner:' + winner;
+      } else {
+        status = 'Next player:' + (this.state.xIsNext ? 'X' : 'O');
+      }
 
       return React.createElement(
         'div',
@@ -138,6 +159,23 @@ var Game = function (_React$Component2) {
   return Game;
 }(React.Component);
 
+function calculateWinner(squares) {
+  var lines = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+  for (var i = 0; i < lines.length; i++) {
+    var _lines$i = _slicedToArray(lines[i], 3),
+        a = _lines$i[0],
+        b = _lines$i[1],
+        c = _lines$i[2];
+
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return squares[a];
+    }
+  }
+  return null;
+}
+
 // ========================================
 
 ReactDOM.render(React.createElement(Game, null), document.getElementById('root'));
+
+// npx babel --watch src --out-dir . --presets react-app/prod
